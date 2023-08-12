@@ -1,15 +1,19 @@
 import React from "react";
-import Col from 'react-bootstrap/Col'
-import Card from 'react-bootstrap/Card';
+import { Col ,Card, Button } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const styles = {
   card: {
     marginBottom: "10px",
     width: "18rem",
   },
+  button: {
+    marginRigth: "2px",
+    marginLeft: "2px"
+  }
 };
 
-export const Producto = ({ title, description, price, code, id, stock }) => {
+export const Producto = ({ title, description, price, code, product_id, stock }) => {
   console.log("🚀 ~ file: Producto.jsx:6 ~ Producto ~ description:", description)
   console.log("🚀 ~ file: Producto.jsx:6 ~ Producto ~ title:", title)
   return (
@@ -27,8 +31,8 @@ export const Producto = ({ title, description, price, code, id, stock }) => {
             <Card.Text>
               {stock}
             </Card.Text>
-            <Card.Link href="#">Card Link</Card.Link>
-            <Card.Link href="#">Another Link</Card.Link>
+            <Button style={styles.button} variant="primary" as={Link} to={`/producto/${product_id}/description`} >Detalle</Button>
+            <Button style={styles.button} variant="primary" as={Link} to={`/producto/${product_id}/modificar`} >Modificar</Button>   
           </Card.Body>
         </Card>
       </Col>
