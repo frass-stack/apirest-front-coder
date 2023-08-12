@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
-import Spinner from 'react-bootstrap/Spinner'
-import Row from 'react-bootstrap/Row'
+import { Spinner, Row } from 'react-bootstrap'
 import { Producto } from "./Producto"
 import { getAll } from "../../services/productoService"
 
@@ -12,7 +11,7 @@ export const Productos = () => {
         const request = async () => {
             try {
                 const data = await getAll();
-                // console.log("🚀 ~ file: Productos.jsx:14 ~ request ~ data:", data)
+                // console.log("🚀 ~ file: Productos.jsx:15 ~ request ~ data:", data)
                 setProductos(data);
                 setTimeout(() => {
                     setLoading(false);
@@ -34,11 +33,13 @@ export const Productos = () => {
         )
     } else {
         return (
-            <div>
+            <>
+                <h1>Panel de Inicio</h1>
                 <Row>
                     {productos.map((p) =>
-                        <Producto 
-                            id={p.product_id}
+                        <Producto
+                            key={p.product_id}
+                            product_id={p.product_id}
                             description={p.description}
                             title={p.title}
                             code={p.code}
@@ -47,7 +48,7 @@ export const Productos = () => {
                         />
                     )}
                 </Row>
-            </div>
+            </>
         )
     }
 
