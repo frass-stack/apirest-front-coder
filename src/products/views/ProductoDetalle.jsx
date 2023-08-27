@@ -27,7 +27,7 @@ export const ProductoDetalle = () => {
             }
         }
         request()
-    })
+    }, [product_id])
 
     if (loading) {
         return (
