@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Home, ProductoDetalle, ProductoModificar } from '../products';
+import { Registro } from '../clients'
 
 export const AppRouter = () => {
-    return(
+    return (
         <Router>
             <Routes>
+                <Route path='/registro' element={<Registro />} />
                 <Route path='/home' element={<Home />} />
                 <Route path='/producto/:product_id/description' element={<ProductoDetalle />} />
                 <Route path='/producto/:product_id/modificar' element={<ProductoModificar />} />
