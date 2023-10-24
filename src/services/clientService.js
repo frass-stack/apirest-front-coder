@@ -4,12 +4,13 @@ export const getAllClient = () => {
 
 }
 
-export const getClientById = (idClient) => {
-    
+export const getClientById = async (id) => {
+    const res = await instances.get(`http://localhost:8888/api/v1/client/${id}`);
+    return res.data.data
 }
 
-export const updateClientByid = (idClient) => {
-    
+export const updateClientByid = async (id, data) => {
+    const res = await instances.put(`http://localhost:8888/api/v1/client/${id}`, data);
 }
 
 export const deleteClientByid = (idClient) => {
