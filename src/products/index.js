@@ -8,3 +8,4 @@ export * from './views/Home';
 export * from './views/ProductoCrear';
 export * from './views/ProductoDetalle';
 export * from './views/ProductoModificar';
+export * from './views/NotFound';

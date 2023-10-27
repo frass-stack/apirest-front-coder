@@ -21,7 +21,7 @@ export const Registro = () => {
                     variant:'success',
                     text: 'Usuario registrado exitosamente.',
                     duration:2000,
-                    link:'/home'
+                    link:'/'
                 })
             }            
             setLoading(false);

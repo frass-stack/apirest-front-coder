@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Form, Button, Spinner } from 'react-bootstrap'
 import { createProduct } from '../../services/productoService'
+import Alert from '../../componetizacion/AlertNavigation'
 import ButtonWithLoading from '../../componetizacion/ButtonWithLoading'
 
 
@@ -11,15 +12,22 @@ export const ProductoCrear = () => {
     const { register, handleSubmit, setValue, formState: { errors }, setError } = useForm({ mode: 'onChange' });
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    const [alert, setAlert] = useState({ variant: '', text: '', duration: 0, link: '' });
 
 
     const onSubmit = async (product) => {
         try {
             await createProduct(product);
             if (Object.keys(errors).length === 0)
-                setTimeout(() => {
-                    navigate('/home');
-                }, 2000)
+                // setTimeout(() => {
+                //     navigate('/home');
+                // }, 2000)
+                setAlert({
+                    variant: 'success',
+                    text: `Producto ${product.title}, creado exitosamente.`,
+                    duration: 2000,
+                    link: '/home'
+                })
         } catch (error) {
             console.log("🚀 ~ file: ProductoModificar.jsx:40 ~ onSubmit ~ error:", error)
         }
@@ -69,6 +77,7 @@ export const ProductoCrear = () => {
                 <ButtonWithLoading className='mb-3 mx-3 btn-success' type='submit'>
                     Guardar
                 </ButtonWithLoading>
+                <Alert {...alert} />
             </Form>
             <ButtonWithLoading type='submit'>
                 <Link style={{ color: 'white' }} to="/home">
