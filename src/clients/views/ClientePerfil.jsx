@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Form, Button } from 'react-bootstrap'
@@ -6,51 +6,39 @@ import { updateClientByid, getClientById } from '../../services/clientService'
 import ButtonWithLoading from '../../componetizacion/ButtonWithLoading'
 import Alert from '../../componetizacion/AlertNavigation'
 import FormInput from '../../componetizacion/FormInput'
+import { AuthContext } from "../../Context/AuthContext";
 
 export const ClientePerfil = () => {
-    const { register, handleSubmit, setValue ,formState: { errors }, setError } = useForm({ mode: 'onChange' })
+    const { register, handleSubmit, setValue, formState: { errors }, setError } = useForm({ mode: 'onChange' })
     const [loading, setLoading] = useState(false);
-    const [alert, setAlert] = useState({variant:'', text:'', duration:0, link:''});
-    // const { client_id = 1 } = useParams();
+    const [alert, setAlert] = useState({ variant: '', text: '', duration: 0, link: '' });
 
-    useEffect(() => {
-        const request = async () => {
-            try {
-                const client = await getClientById(1);
-                // console.log("🚀 ~ file: ClientePerfil.jsx:20 ~ request ~ client:", client)
-                setValue('name', client.name)
-                setValue('lastname', client.lastname)
-                setValue('docnumber', client.docnumber)
-
-                setTimeout(() => {
-                    setLoading(false);
-                }, 2000);
-            } catch (error) {
-                console.log("🚀 ~ file: ProductoModificar.jsx:24 ~ request ~ error:", error)
-            }
-        }
-
-        request();
-    }, [1])
+    const { userData, setUserData } = useContext(AuthContext);
+    const { name, docnumber, lastname, client_id } = userData;
+    const [disabled, setDisabled] = useState(true);
 
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            await updateClientByid(1, data);
-            if (Object.keys(errors).length === 0){
+            await updateClientByid(client_id, data);
+            if (Object.keys(errors).length === 0) {
+                data.docnumber = docnumber;
+                setUserData(data);
                 setAlert({
-                    variant:'success',
+                    variant: 'success',
                     text: 'Usuario actualizado exitosamente.',
-                    duration:2000,
-                    link:'/home'
+                    duration: 2000,
+                    link: '/home'
                 })
-            }            
+            }
+            // userData.docnumber = data.docnumber
+            // navigate("/home");
             setLoading(false);
         } catch (error) {
             setAlert({
-                variant:'danger',
-                text:'Internal error.',
-                duration:2000
+                variant: 'danger',
+                text: 'Internal error.',
+                duration: 2000
             })
             setLoading(false);
         }
@@ -63,7 +51,7 @@ export const ClientePerfil = () => {
                 <FormInput
                     label="Nombre"
                     type="text"
-                    placeholder="Ingrese su nombre..."
+                    placeholder={`${name}`}
                     register={{ ...register("name", { required: true }) }}
                     errors={errors}
                     name="name"
@@ -71,16 +59,17 @@ export const ClientePerfil = () => {
                 <FormInput
                     label="Apellido"
                     type="text"
-                    placeholder="Ingrese su apellido..."
+                    placeholder={`${lastname}`}
                     register={{ ...register("lastname", { required: true }) }}
                     errors={errors}
                     name="lastname"
                 />
                 <FormInput
                     label="Documento"
+                    disabled={disabled}
                     type="text"
-                    placeholder="Ingrese su dni..."
-                    register={{ ...register("docnumber", { required: true }) }}
+                    placeholder={`${docnumber}`}
+                    register={{ ...register("docnumber", { required: false }) }}
                     errors={errors}
                     name="docnumber"
                 />
